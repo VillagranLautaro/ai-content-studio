@@ -1,0 +1,6 @@
+process.env.NODE_ENV = 'test'
+process.env.JWT_SECRET = 'test-secret-that-is-at-least-32-characters-long'
+process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-that-is-at-least-32-characters-long'
+process.env.JWT_EXPIRES_IN = '15m'
+process.env.JWT_REFRESH_EXPIRES_IN = '7d'
+process.env.GROQ_API_KEY = 'test-key'
