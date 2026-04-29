@@ -7,7 +7,8 @@ RUN npm ci
 
 COPY . .
 RUN npm run build
+RUN cp -r src/db/migrations dist/db/migrations
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "npm run migrate && npm start"]
+CMD ["npm", "start"]
