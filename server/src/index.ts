@@ -17,12 +17,19 @@ const PORT = process.env.PORT || 3001;
 
 // ─── Security middleware ──────────────────────────────────
 app.use(helmet());
-app.use(cors({
+
+const corsOptions: cors.CorsOptions = {
   origin: 'https://ai-content-studio-2xdq.vercel.app',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+// Handle preflight OPTIONS requests before any route or rate-limit middleware
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 // ─── Body parsing ─────────────────────────────────────────
 app.use(express.json({ limit: '10kb' }));
