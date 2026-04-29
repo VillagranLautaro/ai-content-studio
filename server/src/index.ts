@@ -9,11 +9,16 @@ import generateRoutes from './routes/generate.routes';
 import historyRoutes from './routes/history.routes';
 import { errorHandler, notFound } from './middleware/error.middleware';
 import { testConnection } from './db/connection';
+import { runMigrations } from './db/migrate';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Trust Railway's proxy so express-rate-limit can read the real client IP
+// from the X-Forwarded-For header without throwing ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1);
 
 // ─── Security middleware ──────────────────────────────────
 app.use(helmet());
@@ -36,12 +41,19 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Rate limiting ────────────────────────────────────────
+// keyGenerator reads the first IP from X-Forwarded-For (set by Railway's proxy)
+// and falls back to req.ip. Localhost requests are skipped entirely.
+const getClientIp = (req: express.Request): string =>
+  (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0].trim() ?? req.ip ?? 'unknown';
+
 const authLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: process.env.NODE_ENV === 'test' ? 1000 : 10,
   message: { success: false, error: 'Demasiados intentos. Esperá un momento.' },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.ip === '::1' || req.ip === '127.0.0.1',
+  keyGenerator: getClientIp,
 });
 
 const apiLimiter = rateLimit({
@@ -50,6 +62,8 @@ const apiLimiter = rateLimit({
   message: { success: false, error: 'Demasiadas solicitudes.' },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.ip === '::1' || req.ip === '127.0.0.1',
+  keyGenerator: getClientIp,
 });
 
 // ─── Routes ───────────────────────────────────────────────
@@ -73,6 +87,13 @@ if (process.env.NODE_ENV !== 'test') {
     const dbOk = await testConnection();
     if (!dbOk) {
       console.error('[Server] Database connection failed. Exiting.');
+      process.exit(1);
+    }
+
+    try {
+      await runMigrations();
+    } catch (err) {
+      console.error('[Server] Migration failed. Exiting.', err);
       process.exit(1);
     }
 
