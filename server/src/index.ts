@@ -70,7 +70,6 @@ const apiLimiter = rateLimit({
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/generate', apiLimiter, generateRoutes);
 app.use('/api/history', apiLimiter, historyRoutes);
-app.use('/api', apiLimiter);
 
 // Health check
 app.get('/health', (_req, res) => {
