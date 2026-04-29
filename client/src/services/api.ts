@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { ApiResponse, LoginPayload, RegisterPayload, User, AuthTokens, Template, Generation } from '@/types'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+baseURL: import.meta.env.VITE_API_URL + '/api' || '/api',
   headers: { 'Content-Type': 'application/json' },
 })
 
