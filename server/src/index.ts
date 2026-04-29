@@ -18,8 +18,10 @@ const PORT = process.env.PORT || 3001;
 // ─── Security middleware ──────────────────────────────────
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: 'https://ai-content-studio-2xdq.vercel.app',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // ─── Body parsing ─────────────────────────────────────────
