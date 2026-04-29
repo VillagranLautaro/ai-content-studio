@@ -1,20 +1,15 @@
-import { ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/store/auth.context'
+import { ReactNode } from 'react'
 
-interface NavItem {
-  to: string
-  label: string
-  icon: ReactNode
-}
-
-const navItems: NavItem[] = [
+const navItems = [
   {
     to: '/dashboard',
     label: 'Dashboard',
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
       </svg>
     ),
   },
@@ -22,8 +17,8 @@ const navItems: NavItem[] = [
     to: '/editor',
     label: 'Editor IA',
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" viewBox="0 0 24 24">
+        <path d="M12 3.5c-2 4-5 6-8.5 7 3.5 1 6.5 3 8.5 7.5 2-4.5 5-6.5 8.5-7.5-3.5-1-6.5-3-8.5-7z"/>
       </svg>
     ),
   },
@@ -31,8 +26,8 @@ const navItems: NavItem[] = [
     to: '/history',
     label: 'Historial',
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
       </svg>
     ),
   },
@@ -48,36 +43,36 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#0a0a0f', color: '#e8e6f0', fontFamily: "'Outfit', sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@600;700&display=swap');
+        * { box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+        .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; text-decoration: none; color: #6b6880; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; border: 1px solid transparent; }
+        .nav-link:hover { color: #c4bfdd; background: rgba(124,111,247,0.06); }
+        .nav-link.active { color: #a89ef5; background: rgba(124,111,247,0.12); border-color: rgba(124,111,247,0.2); }
+        .logout-btn:hover { background: rgba(255,80,80,0.08) !important; color: #ff6b6b !important; }
+      `}</style>
+
       {/* Sidebar */}
-      <aside className="w-60 flex flex-col bg-white border-r border-gray-100 shrink-0">
+      <aside style={{ width: 220, background: '#0d0d14', borderRight: '1px solid #1a1a2e', display: 'flex', flexDirection: 'column', padding: '24px 12px', position: 'fixed', height: '100vh', zIndex: 50 }}>
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
-          <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center shrink-0">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 6px', marginBottom: 32 }}>
+          <div style={{ width: 32, height: 32, background: 'linear-gradient(135deg, #7c6ff7, #a855f7)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="16" height="16" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24">
+              <path d="M12 3.5c-2 4-5 6-8.5 7 3.5 1 6.5 3 8.5 7.5 2-4.5 5-6.5 8.5-7.5-3.5-1-6.5-3-8.5-7z"/>
             </svg>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-900 leading-none">AI Studio</p>
-            <p className="text-xs text-gray-400 mt-0.5">Content Generator</p>
-          </div>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontSize: '1rem', fontWeight: 700, color: '#e8e6f0', letterSpacing: '-0.02em' }}>AI Studio</span>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
-                  isActive
-                    ? 'bg-violet-50 text-violet-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`
-              }
-            >
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+          <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#3a3850', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0 8px', marginBottom: 6 }}>Menú</p>
+          {navItems.map(item => (
+            <NavLink key={item.to} to={item.to} className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
               {item.icon}
               {item.label}
             </NavLink>
@@ -85,32 +80,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </nav>
 
         {/* User */}
-        <div className="px-3 py-4 border-t border-gray-100">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg">
-            <div className="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
-              <span className="text-xs font-semibold text-violet-700">
-                {user?.name?.[0]?.toUpperCase() ?? '?'}
-              </span>
+        <div style={{ borderTop: '1px solid #1a1a2e', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 8px' }}>
+            <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(135deg, #7c6ff7, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#fff', flexShrink: 0 }}>
+              {user?.name?.charAt(0).toUpperCase()}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-              <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+            <div style={{ minWidth: 0 }}>
+              <p style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#c4bfdd', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.name}</p>
+              <p style={{ fontSize: '0.7rem', color: '#4a4860', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email}</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="mt-1 w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors duration-150"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          <button onClick={handleLogout} className="logout-btn" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 14px', borderRadius: 10, border: 'none', background: 'transparent', color: '#4a4860', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer', transition: 'all 0.2s', width: '100%', textAlign: 'left' }}>
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
             </svg>
             Cerrar sesión
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
+      {/* Main */}
+      <main style={{ marginLeft: 220, flex: 1, minHeight: '100vh', overflowY: 'auto' }}>
         {children}
       </main>
     </div>
