@@ -2,13 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { query, testConnection } from './connection';
 
-async function migrate() {
+export async function runMigrations() {
   console.log('[Migrate] Starting migration...');
 
   const connected = await testConnection();
   if (!connected) {
-    console.error('[Migrate] Could not connect to database. Aborting.');
-    process.exit(1);
+    throw new Error('[Migrate] Could not connect to database. Aborting.');
   }
 
   const migrationsDir = path.join(__dirname, 'migrations');
@@ -22,12 +21,16 @@ async function migrate() {
       console.log(`[Migrate] ✓ ${file}`);
     } catch (err) {
       console.error(`[Migrate] ✗ ${file}:`, err);
-      process.exit(1);
+      throw err;
     }
   }
 
   console.log('[Migrate] All migrations completed.');
-  process.exit(0);
 }
 
-migrate();
+// Allow running directly as a script: `ts-node migrate.ts`
+if (require.main === module) {
+  runMigrations()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
+}
