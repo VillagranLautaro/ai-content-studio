@@ -29,7 +29,7 @@ export function useGenerate(): UseGenerateReturn {
     const token = localStorage.getItem('accessToken')
 
     try {
-      const res = await fetch('/api/generate', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
